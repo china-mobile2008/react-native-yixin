@@ -99,7 +99,7 @@ RCT_EXPORT_METHOD(getTokenByUseDelegate
                   :(NSString *)redirectURL
                   :(RCTResponseSenderBlock)callback)
 {
-    callback(@[[NSNull null], [YXApi getTokenByUseDelegate:self OauthReq:(SendOAuthToYXReq *)req redirectURL : (NSString *)redirectURL]]);
+    callback(@[[NSNull null], [YXApi getTokenByUseDelegate:self OauthReq:req redirectURL:redirectURL]]);
 }
 
 RCT_EXPORT_METHOD(getYXOauthToken:(RCTResponseSenderBlock)callback)
@@ -107,20 +107,24 @@ RCT_EXPORT_METHOD(getYXOauthToken:(RCTResponseSenderBlock)callback)
     callback(@[([YXApi getYXOauthToken])]);
 }
 
-RCT_EXPORT_METHOD(sendReq:(NSString *)openid
+RCT_EXPORT_METHOD(sendReq:(NSInteger)curScene
                   :(RCTResponseSenderBlock)callback)
 {
-    YXBaseReq* req = [[YXBaseReq alloc] init];
-    req.openID = openid;
+    
+    SendMessageToYXReq *req = [[SendMessageToYXReq alloc] init];
+    req.bText = YES;
+    req.text = @"http://img5.cache.netease.com/photo/ 童鞋，我想跟你说个事呀！童鞋，童鞋，我想跟你说个事呀！";
+    req.scene = curScene;
     callback(@[[YXApi sendReq:req] ? [NSNull null] : INVOKE_FAILED]);
+    [req release];
 }
 
-RCT_EXPORT_METHOD(sendResp:(RCTResponseSenderBlock)callback)
-{
-    YXBaseReq* resp = [[YXBaseReq alloc] init];
-    resp.errCode = WXSuccess;
-    callback(@[[YXApi sendResp:resp] ? [NSNull null] : INVOKE_FAILED]);
-}
+//RCT_EXPORT_METHOD(sendResp:(RCTResponseSenderBlock)callback)
+//{
+//    YXBaseReq* resp = [[YXBaseReq alloc] init];
+//    resp.errCode = WXSuccess;
+//    callback(@[[YXApi sendResp:resp] ? [NSNull null] : INVOKE_FAILED]);
+//}
 
 #pragma mark - wx callback
 
@@ -133,38 +137,11 @@ RCT_EXPORT_METHOD(sendResp:(RCTResponseSenderBlock)callback)
 {
     if([resp isKindOfClass:[SendMessageToYXResp class]])
     {
-        SendMessageToYXResp *r = (SendMessageToYXResp *)resp;
+        SendMessageToYXResp *sendResp = (SendMessageToYXResp *)resp;
         
-        NSMutableDictionary *body = @{@"errCode":@(r.errCode)}.mutableCopy;
-        body[@"errStr"] = r.errStr;
-        body[@"lang"] = r.lang;
-        body[@"country"] =r.country;
-        body[@"type"] = @"SendMessageToWX.Resp";
-        [self.bridge.eventDispatcher sendDeviceEventWithName:RCTYXEventName body:body];
-    } else if ([resp isKindOfClass:[SendAuthResp class]]) {
-        SendAuthResp *r = (SendAuthResp *)resp;
-        NSMutableDictionary *body = @{@"errCode":@(r.errCode)}.mutableCopy;
-        body[@"errStr"] = r.errStr;
-        body[@"state"] = r.state;
-        body[@"lang"] = r.lang;
-        body[@"country"] =r.country;
-        body[@"type"] = @"SendAuth.Resp";
-        
-        if (resp.errCode == WXSuccess)
-        {
-            [body addEntriesFromDictionary:@{@"appid":self.appId, @"code" :r.code}];
-            [self.bridge.eventDispatcher sendDeviceEventWithName:RCTYXEventName body:body];
-        }
-        else {
-            [self.bridge.eventDispatcher sendDeviceEventWithName:RCTYXEventName body:body];
-        }
-    } else if ([resp isKindOfClass:[PayResp class]]) {
-        PayResp *r = (PayResp *)resp;
-        NSMutableDictionary *body = @{@"errCode":@(r.errCode)}.mutableCopy;
-        body[@"errStr"] = r.errStr;
-        body[@"type"] = @(r.type);
-        body[@"returnKey"] =r.returnKey;
-        body[@"type"] = @"PayReq.Resp";
+        NSMutableDictionary *body = @{@"errCode":@(sendResp.code)}.mutableCopy;
+        body[@"code"] = sendResp.code;
+        body[@"errDescription"] = sendResp.errDescription;
         [self.bridge.eventDispatcher sendDeviceEventWithName:RCTYXEventName body:body];
     }
 }
