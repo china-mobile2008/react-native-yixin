@@ -116,7 +116,6 @@ RCT_EXPORT_METHOD(sendReq:(NSInteger)curScene
     req.text = @"http://img5.cache.netease.com/photo/ 童鞋，我想跟你说个事呀！童鞋，童鞋，我想跟你说个事呀！";
     req.scene = curScene;
     callback(@[[YXApi sendReq:req] ? [NSNull null] : INVOKE_FAILED]);
-    [req release];
 }
 
 //RCT_EXPORT_METHOD(sendResp:(RCTResponseSenderBlock)callback)
@@ -140,7 +139,7 @@ RCT_EXPORT_METHOD(sendReq:(NSInteger)curScene
         SendMessageToYXResp *sendResp = (SendMessageToYXResp *)resp;
         
         NSMutableDictionary *body = @{@"errCode":@(sendResp.code)}.mutableCopy;
-        body[@"code"] = sendResp.code;
+        body[@"code"] = @(sendResp.code);
         body[@"errDescription"] = sendResp.errDescription;
         [self.bridge.eventDispatcher sendDeviceEventWithName:RCTYXEventName body:body];
     }
