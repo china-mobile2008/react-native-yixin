@@ -94,8 +94,7 @@ RCT_EXPORT_METHOD(openYXApp:(RCTResponseSenderBlock)callback)
     callback(@[([YXApi openYXApp] ? [NSNull null] : INVOKE_FAILED)]);
 }
 
-RCT_EXPORT_METHOD(getTokenByUseDelegate
-                  :(SendOAuthToYXReq *)req
+RCT_EXPORT_METHOD(getTokenByUseDelegate:(SendOAuthToYXReq *)req
                   :(NSString *)redirectURL
                   :(RCTResponseSenderBlock)callback)
 {

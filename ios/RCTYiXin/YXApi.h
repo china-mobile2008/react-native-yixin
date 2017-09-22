@@ -119,7 +119,7 @@
  *
  * 安装易信时使用易信app完成流程；反之使用webview完成
  * 函数调用后，会弹出webview界面完成易信登录进行授权认证流程。
- * @param resp OAuth请求消息的对象，调用函数后，请自己释放。
+ * @param req OAuth请求消息的对象，调用函数后，请自己释放。
  * @param redirectURL 你得应用在易信开放平台注册时提供的OAuth认证完成之后的回调url，仅供webview使用，请务必保证参数与你在open平台（http://open.yixin.im）或 游戏平台http://game.yixin.im 提交APP/游戏时注册的redirectURL一致，否则无法完成获取授权流程
  * @param delegate  YXApiDelegate对象，用来接收易信客户端触发的消息。授权成功数据将通过delegate的  onReceiveResponse方法进行通知
  * @return 请求是否发出
