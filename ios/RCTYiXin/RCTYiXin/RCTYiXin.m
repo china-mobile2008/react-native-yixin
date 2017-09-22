@@ -98,7 +98,7 @@ RCT_EXPORT_METHOD(getTokenByUseDelegate:(SendOAuthToYXReq *)req
                   :(NSString *)redirectURL
                   :(RCTResponseSenderBlock)callback)
 {
-    callback(@[[NSNull null], [YXApi getTokenByUseDelegate:self OauthReq:req redirectURL:redirectURL]]);
+    //callback(@[[NSNull null], [YXApi getTokenByUseDelegate:self OauthReq:req redirectURL:redirectURL]]);
 }
 
 RCT_EXPORT_METHOD(getYXOauthToken:(RCTResponseSenderBlock)callback)
@@ -106,7 +106,7 @@ RCT_EXPORT_METHOD(getYXOauthToken:(RCTResponseSenderBlock)callback)
     callback(@[([YXApi getYXOauthToken])]);
 }
 
-RCT_EXPORT_METHOD(sendReq:(NSInteger)curScene
+RCT_EXPORT_METHOD(sendReq:(int)curScene
                   :(RCTResponseSenderBlock)callback)
 {
     
